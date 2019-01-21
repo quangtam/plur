@@ -2,11 +2,12 @@
  * This bootstrap file is used for both frontend and backend
  */
 
-import _ from 'lodash'
-import axios from 'axios'
+// import _ from 'lodash'
+// import axios from 'axios'
 import $ from 'jquery';
 import 'popper.js/dist/umd/popper'; // Required for BS4
 import 'bootstrap';
+
 
 /**
  * Font Awesome >=5.1
@@ -26,6 +27,8 @@ library.add(fab, far, fas);
 // Kicks off the process of finding <i> tags and replacing with <svg>
 dom.watch();
 
+
+
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -33,30 +36,42 @@ dom.watch();
  */
 
 window.$ = window.jQuery = $;
-window._ = _; // Lodash
+// window._ = _; // Lodash
+
+
 
 /**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
+ * Bootstrap tooltips
+ * https://getbootstrap.com/docs/4.1/components/tooltips/
  */
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]'
+});
 
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
 
-const token = document.head.querySelector('meta[name="csrf-token"]');
+// /**
+//  * We'll load the axios HTTP library which allows us to easily issue requests
+//  * to our Laravel back-end. This library automatically handles sending the
+//  * CSRF token as a header based on the value of the "XSRF" token cookie.
+//  */
+//
+// window.axios = axios;
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+// /**
+//  * Next we will register the CSRF Token as a common header with Axios so that
+//  * all outgoing HTTP requests automatically have it attached. This is just
+//  * a simple convenience so we don't have to attach every token manually.
+//  */
+//
+// const token = document.head.querySelector('meta[name="csrf-token"]');
+//
+// if (token) {
+//     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+// } else {
+//     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+// }
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

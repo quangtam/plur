@@ -28,15 +28,18 @@ class HtmlHlp
     }
 
     /**
-     * @param       $url
-     * @param array $attributes
-     * @param null  $secure
-     *
+     * @param string $url
+     * @param array  $attributes
+     * @param null   $secure
      * @return mixed
      */
     public function style($url, $attributes = [], $secure = null)
     {
-        $defaults = ['media' => 'all', 'type' => 'text/css', 'rel' => 'stylesheet'];
+        $defaults = [
+            'media' => 'all',
+            'type'  => 'text/css',
+            'rel'   => 'stylesheet',
+        ];
 
         $attributes = $attributes + $defaults;
 
@@ -51,7 +54,6 @@ class HtmlHlp
      * @param string $url
      * @param array  $attributes
      * @param bool   $secure
-     *
      * @return \Illuminate\Support\HtmlString
      */
     public function script($url, $attributes = [], $secure = null)
@@ -65,7 +67,6 @@ class HtmlHlp
      * Build an HTML attribute string from an array.
      *
      * @param array $attributes
-     *
      * @return string
      */
     public function attributes($attributes)
@@ -75,7 +76,7 @@ class HtmlHlp
         foreach ((array) $attributes as $key => $value) {
             $element = $this->attributeElement($key, $value);
 
-            if (!is_null($element)) {
+            if (! is_null($element)) {
                 $html[] = $element;
             }
         }
@@ -88,7 +89,6 @@ class HtmlHlp
      *
      * @param string $key
      * @param string $value
-     *
      * @return string
      */
     protected function attributeElement($key, $value)
@@ -107,7 +107,7 @@ class HtmlHlp
             return $value ? $key : '';
         }
 
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             return $key.'="'.e($value).'"';
         }
     }
@@ -116,7 +116,6 @@ class HtmlHlp
      * Transform the string to an Html serializable object.
      *
      * @param $html
-     *
      * @return \Illuminate\Support\HtmlString
      */
     protected function toHtmlString($html)

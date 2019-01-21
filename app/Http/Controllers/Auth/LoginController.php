@@ -59,6 +59,7 @@ class LoginController extends Controller
     {
         $identity = request()->get('identity');
         $fieldName = filter_var($identity, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
         request()->merge([$fieldName => $identity]);
 
         return $fieldName;
@@ -88,8 +89,8 @@ class LoginController extends Controller
         $this->validate(
             $request,
             [
-                'identity'  => 'required|string',
-                'password'  => 'required|string',
+                'identity' => 'required|string',
+                'password' => 'required|string',
             ],
             [
                 'identity.required' => 'Username or email is required',
@@ -99,18 +100,19 @@ class LoginController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Get the failed login response instance.
      *
-     * @throws ValidationException
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendFailedLoginResponse(Request $request)
     {
         $request->session()->put('login_error', trans('auth.failed'));
 
-        throw ValidationException::withMessages(
-            [
-                'error' => [trans('auth.failed')],
-            ]
-        );
+        throw ValidationException::withMessages([
+            'error' => [trans('auth.failed')],
+        ]);
     }
 }

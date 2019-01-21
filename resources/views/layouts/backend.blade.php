@@ -1,13 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Dashboard | {{config('app.name')}}</title>
-  {{-- Icons --}}
-  {!! style('https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css') !!}
+  <title>@yield('title') | {{config('app.name')}}</title>
+
   {{-- Main styles for this application --}}
   {!! style(mix('css/backend.css')) !!}
 </head>
@@ -18,8 +17,7 @@
 <div class="app-body">
   @include('backend.partials.sidebar')
 
-  <main class="main">
-    {!! Breadcrumbs::render() !!}
+  <main class="main mt-4">
     <div class="container-fluid">
       @yield('content')
     </div>
@@ -32,8 +30,5 @@
 {!! script(mix('js/manifest.js')) !!}
 {!! script(mix('js/vendor.js')) !!}
 {!! script(mix('js/backend.js')) !!}
-@if(config('app.env') == 'local')
-  <script src="http://localhost:35729/livereload.js"></script>
-@endif
 </body>
 </html>

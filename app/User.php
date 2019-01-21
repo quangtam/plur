@@ -3,12 +3,16 @@
 namespace App;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Traits\Hashidable;
+use Creativeorange\Gravatar\Facades\Gravatar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravolt\Avatar\Facade as Avatar;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use Hashidable;
     use HasRoles;
     use Notifiable;
 
@@ -30,8 +34,22 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // Relations
     public function url()
     {
         return $this->hasMany('App\Url');
+    }
+
+    // Accessors
+    public function getAvatarAttribute()
+    {
+        // Check if Gravatar has an avatar for the given email address
+        if (Gravatar::exists($this->email) == true) {
+            // Get the gravatar url
+            return Gravatar::get($this->email);
+        }
+
+        // Create unique avatar based on their email
+        return Avatar::create(title_case($this->email))->toBase64();
     }
 }

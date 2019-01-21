@@ -1,18 +1,17 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>{{config('app.name')}}</title>
+  <title>{{config('app.name').' - '.config('app.description')}}</title>
 
-  {!! style(mix('css/bootstrap-custom.css')) !!}
   {!! style(mix('css/frontend.css')) !!}
 </head>
 
 <body class="@yield('css_class')">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand navbar-dark">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">{{config('app.name')}}</a>
 
@@ -22,16 +21,28 @@
         @auth
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ title_case(Auth::user()->name) }}
+              <img class="img-avatar" src="{{ Auth::user()->avatar }}" alt="Avatar">
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('admin') }}">Dashboard</a>
-              <a class="dropdown-item" href="{{ route('viewChangePassword') }}">Change Password</a>
+              <span class="dropdown-item" href="{{ route('admin') }}">
+                @lang('Signed in as') {{ title_case(Auth::user()->name) }}
+              </span>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ route('admin') }}">
+                @lang('Dashboard')
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ route('user.edit', Auth::user()->name) }}">
+                @lang('Your Profile')
+              </a>
+              <a class="dropdown-item" href="{{ route('user.change-password', Auth::user()->name) }}">
+                @lang('Change Password')
+              </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('logout') }}"
-                onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
+                 onclick="event.preventDefault();
+                 document.getElementById('logout-form').submit();">
+                {{ __('Sign out') }}
               </a>
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
               @csrf
@@ -40,11 +51,13 @@
           </li>
         @else
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('login') }}">Login</a>
+            <a class="nav-link" href="{{ route('login') }}">@lang('Login')</a>
           </li>
+          @if (Route::has('register'))
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('register') }}">Register</a>
+            <a class="nav-link" href="{{ route('register') }}">@lang('Register')</a>
           </li>
+          @endif
         @endauth
       </ul>
     </div>

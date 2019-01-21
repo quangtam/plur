@@ -1,28 +1,25 @@
 @extends('layouts.frontend')
 
-@section('css_class', 'view_short')
+@section('css_class', 'frontend view_short')
 
 @section('content')
 <div class="container">
   <div class="row header mt-5">
   <div class="col-md-9">
-    @if (session('msgLinkAlreadyExists'))
-    <div class="alert alert-success">
-      {{ session('msgLinkAlreadyExists') }}
-    </div>
-    @endif
+
+    @include('messages')
 
     <ul class="list-inline">
       <li class="list-inline-item">
         <i class="far fa-clock"></i>
-        <i>{{ $created_at }}</i>
+        <i>{{ $url->created_at->toDayDateTimeString() }}</i>
       </li>
       <li class="list-inline-item">
         <i class="far fa-eye"></i>
-        <i>{{ $views }}</i>
+        <i><span title="{{number_format($url->clicks)}} clicks" data-toggle="tooltip">{{readable_int($url->clicks)}}</span></i>
       </li>
     </ul>
-    <div class="title">{{ $long_url_title }}</div>
+    <div class="title">{!! $url->meta_title !!}</div>
   </div>
   </div>
 
@@ -30,22 +27,19 @@
   <div class="col-md-9">
     <div class="row body">
       <div class="col-md">
-        <img src="data:{{$qrCodeData}};base64,{{$qrCodebase64}}" alt="QR Code">
+        <img src="data:{{$qrCodeData}};base64,{{$qrCodeBase64}}" alt="QR Code">
       </div>
       <div class="col-md-9">
-        <b>Original URL</b>
-        <div class="long-url"><a href="{{ $long_url_href }}" target="_blank" title="{{ $long_url_href }}">{{ $long_url }}</a></div>
+        <b>@lang('Short URL')</b> <br>
+        <span class="short-url"><a href="{{ $url->short_url }}" target="_blank" id="copy">{{ remove_schemes($url->short_url) }}</a></span>
+        <button class="btn btn-sm btn-outline-success btn-clipboard ml-3" data-clipboard-text="{{ remove_schemes($url->short_url) }}" title="@lang('Copy to clipboard')" data-toggle="tooltip">@lang('Copy')</button>
 
-        <br>
-        <b>Short URL</b> <br>
-        <span class="short-url"><a href="{{ $short_url_href }}" target="_blank" id="copy">{{ $short_url }}</a></span>
-        <button class="btn btn-outline-success btn-copy" data-clipboard-text="{{ $short_url_href }}">Copy</button>
-        <p><b>Share to:</b></p>
-        <div class="socials-share" data-share-url="{{ $short_url_href }}">
-          <button class="btn btn-facebook social-share-network" data-social-network="facebook"><i class="fab fa-facebook-f"></i> Facebook</button>
-          <button class="btn btn-twitter social-share-network" data-social-network="twitter"><i class="fab fa-twitter"></i> Twitter</button>
-          <button class="btn btn-google-plus social-share-network" data-social-network="google"><i class="fab fa-google-plus-g"></i> Google</button>
-        </div>
+        <br> <br>
+
+        <b>@lang('Original URL')</b>
+        <div class="long-url"><a href="{{ $url->long_url }}" target="_blank" title="{{ $url->long_url }}" data-toggle="tooltip">{{ url_limit($url->long_url) }}</a></div>
+
+        <div class="mt-5" id="jssocials"></div>
       </div>
     </div>
   </div>

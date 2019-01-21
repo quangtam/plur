@@ -14,31 +14,33 @@
 
   <ul class="nav navbar-nav d-md-down-none">
     <li class="nav-item px-3">
-        <a class="nav-link" href="{{ url('./') }}" target="_blank"><i class="icon-home"></i></a>
+        <a class="nav-link" id="homepage-icon" href="{{ url('./') }}" title="{{config('app.name')}} @lang('Home Page')" data-toggle="tooltip"><i class="fas fa-home"></i></a>
     </li>
 
-    <li class="nav-item px-3">
-        <a class="nav-link" href="{{ route('admin') }}">Dashboard</a>
-    </li>
+    @if(Breadcrumbs::exists())
+      {!! Breadcrumbs::render() !!}
+    @endif
   </ul>
 
   <ul class="nav navbar-nav ml-auto mr-5">
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-        {{ title_case(Auth::user()->name) }}
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <img class="img-avatar" src="{{ Auth::user()->avatar }}" alt="Avatar">
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" href="{{ route('viewProfile') }}">
-          <i class="fas fa-user"></i> Your Profile
+        <span class="dropdown-item" href="{{ route('admin') }}">
+          @lang('Signed in as') {{ title_case(Auth::user()->name) }}
+        </span>
+        <a class="dropdown-item" href="{{ route('user.edit', Auth::user()->name) }}">
+          @lang('Your Profile')
         </a>
-        <a class="dropdown-item" href="{{ route('viewChangePassword') }}">
-          <i class="fas fa-key"></i> Change Password
+        <a class="dropdown-item" href="{{ route('user.change-password', Auth::user()->name) }}">
+          @lang('Change Password')
         </a>
         <a class="dropdown-item" href="{{ route('logout') }}"
            onclick="event.preventDefault();
            document.getElementById('logout-form').submit();">
-          <i class="fas fa-sign-out-alt"></i>
-          {{ __('Logout') }}
+           @lang('Sign out')
         </a>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf

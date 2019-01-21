@@ -2,27 +2,60 @@
 
 namespace App;
 
+use App\Http\Traits\Hashidable;
+use Facades\App\Helpers\UrlHlp;
 use Illuminate\Database\Eloquent\Model;
 
 class Url extends Model
 {
+    use Hashidable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'user_id',
+        'url_key',
+        'is_custom',
         'long_url',
-        'long_url_title',
-        'short_url',
-        'short_url_custom',
-        'views',
+        'meta_title',
+        'clicks',
         'ip',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_custom' => 'boolean',
+    ];
+
+    // Relations
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User')->withDefault([
+            'name' => 'Guest',
+        ]);
     }
 
-    public function getLongUrlModAttribute()
+    // Mutator
+    public function setLongUrlAttribute($value)
     {
-        return urlToDomain(url_limit($this->long_url));
+        $this->attributes['long_url'] = rtrim($value, '/');
+    }
+
+    public function setMetaTitleAttribute($value)
+    {
+        $this->attributes['meta_title'] = UrlHlp::getTitle($value);
+    }
+
+    // Accessor
+    public function getShortUrlAttribute()
+    {
+        return url('/'.$this->attributes['url_key']);
     }
 }

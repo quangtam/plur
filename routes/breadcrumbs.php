@@ -6,15 +6,20 @@ Breadcrumbs::for('admin', function ($trail) {
 
 Breadcrumbs::for('admin.allurl', function ($trail) {
     $trail->parent('admin');
-    $trail->push('All URLs', route('admin.allurl'));
+    $trail->push(__('All URLs'), route('admin.allurl'));
 });
 
-Breadcrumbs::for('viewProfile', function ($trail) {
+Breadcrumbs::for('user.index', function ($trail) {
     $trail->parent('admin');
-    $trail->push('Profile', route('viewProfile'));
+    $trail->push(__('All Users'), route('user.index'));
 });
 
-Breadcrumbs::for('viewChangePassword', function ($trail) {
-    $trail->parent('admin');
-    $trail->push('Change Password', route('viewChangePassword'));
+Breadcrumbs::for('user.edit', function ($trail, $user) {
+    $trail->parent('user.index');
+    $trail->push(__('Profile'), route('user.edit', $user));
+});
+
+Breadcrumbs::for('user.change-password', function ($trail, $user) {
+    $trail->parent('user.edit', $user);
+    $trail->push(__('Change Password'), route('user.change-password', $user));
 });
