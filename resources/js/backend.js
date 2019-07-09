@@ -13,6 +13,7 @@ $(document).ready(function() {
         }
     });
 
+    // All URLs Page
     $('#dt-allUrls').DataTable( {
         processing: true,
         serverSide: true,
@@ -40,6 +41,7 @@ $(document).ready(function() {
         }
     }).order([4, 'desc']).draw();
 
+    // My URLs Page
     $('#dt-myUrls').DataTable({
         processing: true,
         serverSide: true,
@@ -66,6 +68,7 @@ $(document).ready(function() {
         }
     }).order([3, 'desc']).draw();
 
+    // All Users Page
     $('#dt-Users').DataTable({
         processing: true,
         serverSide: true,
@@ -103,8 +106,9 @@ $(document).ready(function() {
 
 /**
  * Copy short url to clipboard
+ *
+ * https://github.com/zenorocha/clipboard.js
  */
-// https://github.com/zenorocha/clipboard.js
 var ClipboardJS = require('clipboard');
 
 new ClipboardJS('[data-clipboard-text]').on('success', function(e) {

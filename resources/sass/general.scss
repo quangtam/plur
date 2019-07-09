@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900');
 
-/*
- * Variables
- */
-$bg-gray: #f8f9fa;
+//
+// General variables
+//
+$bg-gray: #f5f5f7;
 
 $blue:    #3B5998;
 $green:   #1c9963;
@@ -30,12 +30,12 @@ $dropdown-link-color:       #333 !default;
 $dropdown-link-hover-color: darken($dropdown-link-color, 5%) !default;
 
 // Cards
-$card-cap-bg:         none;
-$card-border-radius:  0.25rem;
+$card-cap-bg:        none;
+$card-border-radius: 0.25rem;
 
-/*
- * Extend
- */
+//
+// Extend
+//
 %card-body {
   @extend %box-shadow;
   background-color: #fff;

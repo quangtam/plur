@@ -5,38 +5,51 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Url;
 use App\User;
-use Facades\App\Helpers\UrlHlp;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 
 class DashboardController extends Controller
 {
+    /**
+     * @var url
+     */
+    protected $url;
+
+    /**
+     * Url constructor.
+     *
+     * @param Url $url
+     */
+    public function __construct(Url $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * Show users all their Short URLs.
+     */
     public function view()
     {
-        // Count the number of guests in the url column based on IP
-        // and grouped by ip.
-        $totalGuest = Url::select('ip', DB::raw('count(*) as total'))
-                         ->whereNull('user_id')
-                         ->groupBy('ip')
-                         ->get()
-                         ->count();
+        $user = new User;
 
         return view('backend.dashboard', [
-            'totalShortUrl'        => Url::count('url_key'),
-            'totalShortUrlByMe'    => $this->totalShortUrlById(Auth::id()),
-            'totalShortUrlByGuest' => $this->totalShortUrlById(),
-            'totalClicks'          => Url::sum('clicks'),
-            'totalClicksByMe'      => $this->totalClicksById(Auth::id()),
-            'totalClicksByGuest'   => $this->totalClicksById(),
-            'totalUser'            => User::count(),
-            'totalGuest'           => $totalGuest,
-            'capacity'             => UrlHlp::url_key_capacity(),
-            'remaining'            => UrlHlp::url_key_remaining(),
+            'totalShortUrl'        => $this->url->totalShortUrl(),
+            'totalShortUrlByMe'    => $this->url->totalShortUrlById(Auth::id()),
+            'totalShortUrlByGuest' => $this->url->totalShortUrlById(),
+            'totalClicks'          => $this->url->totalClicks(),
+            'totalClicksByMe'      => $this->url->totalClicksById(Auth::id()),
+            'totalClicksByGuest'   => $this->url->totalClicksById(),
+            'totalUser'            => $user->totalUser(),
+            'totalGuest'           => $user->totalGuest(),
+            'capacity'             => $this->url->url_key_capacity(),
+            'remaining'            => $this->url->url_key_remaining(),
 
         ]);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getData()
     {
         $model = Url::whereUserId(Auth::id());
@@ -65,8 +78,8 @@ class DashboardController extends Controller
                 return
                 '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                     <a role="button" class="btn" href="'.route('short_url.stats', $url->url_key).'" target="_blank" title="'.__('Details').'" data-toggle="tooltip"><i class="fa fa-eye"></i></a>
-                    <a role="button" class="btn" href="'.route('admin.duplicate', $url->url_key).'" title="'.__('Duplicate').'" data-toggle="tooltip"><i class="far fa-clone"></i></a>
-                    <a role="button" class="btn" href="'.route('admin.delete', $url->getRouteKey()).'" title="'.__('Delete').'" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></a>
+                    <a role="button" class="btn" href="'.route('dashboard.duplicate', $url->url_key).'" title="'.__('Duplicate').'" data-toggle="tooltip"><i class="far fa-clone"></i></a>
+                    <a role="button" class="btn" href="'.route('dashboard.delete', $url->getRouteKey()).'" title="'.__('Delete').'" data-toggle="tooltip"><i class="fas fa-trash-alt"></i></a>
                  </div>';
             })
             ->rawColumns(['url_key', 'long_url', 'clicks', 'created_at.display', 'action'])
@@ -74,6 +87,8 @@ class DashboardController extends Controller
     }
 
     /**
+     * Delete a Short URL on user request.
+     *
      * @param \App\Url $url
      * @return \Illuminate\Http\RedirectResponse
      *
@@ -90,38 +105,24 @@ class DashboardController extends Controller
     }
 
     /**
+     * Defaultly UrlHub only permited only one link at the time,
+     * but you can duplicate it.
+     *
      * @param string $url_key
      * @return \Illuminate\Http\RedirectResponse
      */
     public function duplicate($url_key)
     {
-        $url = Url::whereUrlKey($url_key)
-                  ->firstOrFail();
+        $url = Url::whereUrlKey($url_key)->firstOrFail();
 
         $replicate = $url->replicate();
         $replicate->user_id = Auth::id();
-        $replicate->url_key = UrlHlp::key_generator();
+        $replicate->url_key = $this->url->key_generator();
         $replicate->is_custom = 0;
         $replicate->clicks = 0;
         $replicate->save();
 
         return redirect()->back()
                          ->withFlashSuccess(__('Link was successfully duplicated.'));
-    }
-
-    /**
-     * @param int $id
-     */
-    public function totalShortUrlById($id = null)
-    {
-        return Url::whereUserId($id)->count('url_key');
-    }
-
-    /**
-     * @param int $id
-     */
-    public function totalClicksById($id = null)
-    {
-        return Url::whereUserId($id)->sum('clicks');
     }
 }

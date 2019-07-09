@@ -13,8 +13,8 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title mb-0">
-            @lang('Profile')
-            <small class="text-muted">@lang('Edit')</small>
+            @lang('Account Settings')
+            <small class="text-muted">@lang('Profile')</small>
           </h4>
 
           <hr />
@@ -46,7 +46,7 @@
 
             <div class="row">
               <div class="col text-right">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-secondary">
                   @lang('Save')
                 </button>
               </div>

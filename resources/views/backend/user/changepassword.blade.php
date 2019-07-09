@@ -13,7 +13,7 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title mb-0">
-            @lang('Account Management')
+            @lang('Account Settings')
             <small class="text-muted">@lang('Change Password')</small>
           </h4>
 
@@ -22,10 +22,10 @@
           <div class="row mt-4 mb-4">
           <div class="col">
             <div class="form-group{{ $errors->has('current-password') ? ' has-error' : '' }} row">
-              <label for="current-password" class="col-sm-3 col-form-label">@lang('Current Password')</label>
+              <label for="current-password" class="col-sm-3 col-form-label">@lang('Your Password')</label>
 
               <div class="col">
-                <input id="current-password" type="password" class="form-control" name="current-password" required>
+                <input id="current-password" type="password" class="form-control" name="current-password" placeholder="Enter your password" required>
               </div>
             </div>
 
@@ -33,21 +33,21 @@
               <label for="new-password" class="col-sm-3 col-form-label">@lang('New Password')</label>
 
               <div class="col">
-                <input id="new-password" type="password" class="form-control" name="new-password" required>
+                <input id="new-password" type="password" class="form-control" name="new-password" placeholder="Enter a new password" required>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="new-password-confirm" class="col-sm-3 col-form-label">@lang('Confirm New Password')</label>
+              <label for="new-password-confirm" class="col-sm-3 col-form-label">@lang('Confirmation')</label>
 
               <div class="col">
-                <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" required>
+                <input id="new-password-confirm" type="password" class="form-control" name="new-password_confirmation" placeholder="Retype the new password" required>
               </div>
             </div>
 
             <div class="row">
               <div class="col text-right">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-secondary">
                   @lang('Change Password')
                 </button>
               </div>

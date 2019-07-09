@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 .env
+.env.backup
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -12,7 +13,4 @@ yarn-error.log
 #
 /.idea
 /.vscode
-/public/**/*.map
-/public/css/*.css
-/public/js/*.js
-/public/mix-manifest.json
+/public/*/*.map

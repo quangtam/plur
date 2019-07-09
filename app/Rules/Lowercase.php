@@ -19,12 +19,13 @@ class Lowercase implements Rule
     }
 
     /**
+     * @codeCoverageIgnore
      * Get the validation error message.
      *
      * @return string
      */
     public function message()
     {
-        return 'The :attribute must be lowercase.';
+        return 'The :attribute must be Lowercase.';
     }
 }

@@ -1,19 +1,23 @@
-<h1>Newt</h1>
+<h1>UrlHub</h1>
 
 [![MadeWithLaravel.com shield](https://madewithlaravel.com/storage/repo-shields/1049-shield.svg)](https://madewithlaravel.com/p/plur/shield-link)
+[![LaravelVersion](https://img.shields.io/badge/Laravel-5.8-FB5743.svg?style=flat-square)](https://laravel.com/docs/5.8)
+![PHPVersion](https://img.shields.io/badge/PHP-%5E7.2-777BB4.svg?style=flat-square)
+[![GitHub license](https://img.shields.io/github/license/realodix/newt.svg?style=flat-square)](https://github.com/realodix/newt/blob/master/LICENSE) <br>
 [![StyleCI shield](https://github.styleci.io/repos/146186200/shield)](https://github.styleci.io/repos/146186200)
-[![GitHub license](https://img.shields.io/github/license/realodix/newt.svg)](https://github.com/realodix/newt/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/realodix/urlhub.svg?branch=master)](https://travis-ci.org/realodix/urlhub)
+[![Coverage Status](https://coveralls.io/repos/github/realodix/urlhub/badge.svg?branch=master)](https://coveralls.io/github/realodix/urlhub)
 
-**Warning: This software is still in development,** so we don’t recommend you run it on a production site.
+> **Warning: UrlHub is under heavy development** and isn't still stable enough to be used in production environments. We could change and / or remove functions in any moment.
 
-Newt is a free, open-source and easy-to-use but powerful URL shortener. It allows you to host your own URL shortener, and gives you many useful features.
+UrlHub was created, and is maintained by [Budi Hermawan](https://github.com/realodix), and is an open-source, easy-to-use but powerful URL shortener. It allows you to host your own URL shortener, and gives you many useful features.
 
 ### Features
 * URL Shortener.
 * Customized short URL's(ex: example.com/laravel).
 * QR code generator for each short link.
 * Sortable list of shortened URLs.
-* Written in PHP and Laravel 5.7.
+* Written in PHP and [Laravel 5.8](https://laravel.com/docs/5.8).
 * Datatables with server-side processing.
 * Modern and simple interface.
 * Made with :heart: &amp; :coffee:.
@@ -25,7 +29,7 @@ Newt is a free, open-source and easy-to-use but powerful URL shortener. It allow
 
 
 ## Requirements
-- [All requirements by Laravel](https://laravel.com/docs/installation#server-requirements) - PHP >= 7.1.3, [Composer](https://getcomposer.org/) and such.
+- [All requirements by Laravel](https://laravel.com/docs/installation#server-requirements) - PHP >= 7.2, [Composer](https://getcomposer.org/) and such.
 - MySQL or MariaDB.
 
 
@@ -47,25 +51,30 @@ Newt is a free, open-source and easy-to-use but powerful URL shortener. It allow
 
 6. Login
 
-   | Email           | Username | Password | Access       |
-   |-----------------|----------|----------|--------------|
-   | admin@newt.test | admin    | admin    | Admin Access |
-   | user@newt.test  | user     | user     | User Access  |
+   | Email             | Username | Password | Access       |
+   |-------------------|----------|----------|--------------|
+   | admin@urlhub.test | admin    | admin    | Admin Access |
+   | user@urlhub.test  | user     | user     | User Access  |
 
 ### Compiling assets with Laravel Mix
-#### Using Yarn:
-1. From the projects root folder run `yarn`
-2. Run `yarn dev` or `yarn prod`
-  * *You can watch assets with `yarn watch`*
 
 #### Using NPM:
-1. From the projects root folder run `npm install`
-2. Run `npm run dev` or `npm run prod`
-  * *You can watch assets with `npm run watch`*
+1. `npm install`
+2. `npm run dev` or `npm run prod`
+
+    *You can watch assets with `npm run watch`*
+
+#### Using Yarn:
+1. `yarn`
+2. `yarn dev` or `yarn prod`
+
+    *You can watch assets with `yarn watch`*
 
 
 ## Contributing
-Any useful suggestion and PR are welcomed. If you would like to contribute, please do the following:
+Thank you for considering contributing to UrlHub. Any useful suggestion and pull requests are welcomed.
+
+Please do the following:
 
 1. Fork the repository.
 2. Hack on a separate topic branch created from the latest `master`.
@@ -73,6 +82,13 @@ Any useful suggestion and PR are welcomed. If you would like to contribute, plea
 4. Make a pull request.
 5. Welcome to the club :sunglasses: and thank you for helping out!
 
+### Running Tests
+
+On `.env` file, set `DB_TEST_` with the settings used behind.
+
+From the projects root folder run `./vendor/bin/phpunit`
+
+![screenshot](https://i.imgur.com/A8eJJyz.png)
 
 ## License
-Newt is an open-sourced software licensed under the [MIT license](https://github.com/realodix/newt/blob/master/LICENSE).
+UrlHub is an open-source software licensed under the [MIT license](https://github.com/realodix/urlhub/blob/master/LICENSE).

@@ -4,18 +4,32 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Url;
-use Facades\App\Helpers\UrlHlp;
 use Illuminate\Support\Facades\Auth;
 
 class UrlController extends Controller
 {
     /**
+     * @var url
+     */
+    protected $url;
+
+    /**
+     * UrlController constructor.
+     *
+     * @param Url $url
+     */
+    public function __construct(Url $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @codeCoverageIgnore
      * @param string $url_key
      */
     public function view($url_key)
     {
-        $url = Url::whereUrlKey($url_key)
-                    ->firstOrFail();
+        $url = Url::whereUrlKey($url_key)->firstOrFail();
 
         $qrCode = qrCodeGenerator($url->short_url);
 
@@ -26,15 +40,17 @@ class UrlController extends Controller
     }
 
     /**
+     * Defaultly UrlHub only permited only one link at the time, but you can duplicate
+     * it.
+     *
      * @param string $url_key
      * @return \Illuminate\Http\RedirectResponse
      */
     public function duplicate($url_key)
     {
-        $url = Url::whereUrlKey($url_key)
-                  ->firstOrFail();
+        $url = Url::whereUrlKey($url_key)->firstOrFail();
 
-        $url_key = UrlHlp::key_generator();
+        $url_key = $this->url->key_generator();
 
         $replicate = $url->replicate();
         $replicate->user_id = Auth::id();

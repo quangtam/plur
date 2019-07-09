@@ -192,8 +192,8 @@
     .img-avatar {
       height: 35px;
       max-width: 100%;
-      margin: 0 10px;
       border-radius: 50em;
+      margin: 0 10px;
     }
   }
 }
@@ -203,10 +203,10 @@
 // Socials Share
 //
 .jssocials-share{
-  font-size: 1.2rem;
+  font-size: 1rem;
 
   &-email a {
-    color: #4e4e4e;
+    color: #d14836;
   }
 
   &-facebook a {
@@ -215,5 +215,13 @@
 
   &-twitter a {
     color: #1da1f2;
+  }
+
+  &-whatsapp a {
+    color: #1db69e;
+  }
+
+  &-telegram a {
+    color: #2ca5e0;
   }
 }

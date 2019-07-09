@@ -1,6 +1,7 @@
 <?php
 
-use Facades\App\Helpers\UrlHlp;
+use App\Url;
+use App\User;
 use Faker\Generator as Faker;
 
 /*
@@ -14,14 +15,18 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Url::class, function (Faker $faker) {
+$factory->define(Url::class, function (Faker $faker) {
+    $url = new Url();
+
     return [
-        'user_id'    => $faker->biasedNumberBetween($min = 0, $max = 20, $function = 'sqrt'),
-        'long_url'   => 'https://github.com/realodix/newt',
+        'user_id'    => function () {
+            return factory(User::class)->create()->id;
+        },
+        'long_url'   => 'https://github.com/realodix/urlhub',
         'meta_title' => 'URL Title',
-        'url_key'    => UrlHlp::key_generator(),
+        'url_key'    => $url->key_generator(),
         'is_custom'  => 0,
-        'clicks'     => $faker->biasedNumberBetween($min = 10000, $max = 999999999, $function = 'sqrt'),
+        'clicks'     => mt_rand(10000, 999999999),
         'ip'         => $faker->ipv4,
     ];
 });

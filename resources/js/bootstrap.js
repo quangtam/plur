@@ -5,7 +5,7 @@
 // import _ from 'lodash'
 // import axios from 'axios'
 import $ from 'jquery';
-import 'popper.js/dist/umd/popper'; // Required for BS4
+import 'popper.js'; // Required for BS4
 import 'bootstrap';
 
 
@@ -42,7 +42,7 @@ window.$ = window.jQuery = $;
 
 /**
  * Bootstrap tooltips
- * https://getbootstrap.com/docs/4.1/components/tooltips/
+ * https://getbootstrap.com/docs/4.3/components/tooltips/
  */
 $("body").tooltip({
     selector: '[data-toggle="tooltip"]'

@@ -1,53 +1,74 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Helpers;
 
 use Facades\App\Helpers\NumHlp;
 use Tests\TestCase;
 
 class NumHlpTest extends TestCase
 {
-    public function test_readable_int()
+    /**
+     * @test
+     * @dataProvider readableInt
+     */
+    public function readable_int($expected, $actual)
     {
-        $this->assertSame('1K', readable_int(1000));
-        $this->assertSame('10K', readable_int(10000));
-        $this->assertSame('100K', readable_int(100000));
+        $this->assertSame($expected, readable_int($actual));
 
-        $this->assertSame('1M', readable_int(1000000));
-        $this->assertSame('10M', readable_int(10000000));
-        $this->assertSame('100M', readable_int(100000000));
+        $int_or_str = readable_int($actual);
 
-        $this->assertSame('1B', readable_int(1000000000));
-        $this->assertSame('10B', readable_int(10000000000));
-        $this->assertSame('100B', readable_int(100000000000));
-
-        $this->assertSame('1T', readable_int(1000000000000));
-        $this->assertSame('10T', readable_int(10000000000000));
-        $this->assertSame('100T', readable_int(100000000000000));
-
-        $this->assertSame('12K+', readable_int(12345));
-        $this->assertSame('12M+', readable_int(12345678));
-        $this->assertSame('1B+', readable_int(1234567890));
-        $this->assertSame('1T+', readable_int(1234567890000));
+        if (is_int($int_or_str)) {
+            $this->assertIsInt($int_or_str);
+        } else {
+            $this->assertIsString($int_or_str);
+        }
     }
 
-    public function test_readable_int_input_num()
+    public function readableInt()
     {
-        $this->assertSame('12', readable_int(12));
-        $this->assertSame('12', readable_int(12.3));
+        return [
+            ['12', 12],
+            ['12', 12.3],
+
+            ['1K', pow(10, 3)],
+            ['10K', pow(10, 4)],
+            ['100K', pow(10, 5)],
+
+            ['1M', pow(10, 6)],
+            ['10M', pow(10, 7)],
+            ['100M', pow(10, 8)],
+
+            ['1B', pow(10, 9)],
+            ['10B', pow(10, 10)],
+            ['100B', pow(10, 11)],
+
+            ['1T', pow(10, 12)],
+            ['10T', pow(10, 13)],
+            ['100T', pow(10, 14)],
+
+            ['12K+', 12345],
+            ['12M+', 12345678],
+            ['1B+', 1234567890],
+            ['1T+', 1234567890000],
+        ];
     }
 
-    public function test_readable_int_input_str()
+    /**
+     * @test
+     * @dataProvider numberFormatPrecision
+     */
+    public function number_format_precision($expected, $actual, $precision = 2)
     {
-        $this->assertSame('10', readable_int('10'));
-        $this->assertSame('1K', readable_int('1000'));
+        $this->assertSame($expected, NumHlp::number_format_precision($actual, $precision));
     }
 
-    public function test_number_format_precision()
+    public function numberFormatPrecision()
     {
-        $this->assertSame(10, NumHlp::number_format_precision(10.0));
-        $this->assertSame(10, NumHlp::number_format_precision(10.00));
-        $this->assertSame(10.11, NumHlp::number_format_precision(10.111));
-        $this->assertSame(10.127, NumHlp::number_format_precision(10.1279, 3));
+        return [
+            [10, 10.0],
+            [10, 10.00],
+            [10.11, 10.111],
+            [10.127, 10.1279, 3],
+        ];
     }
 }

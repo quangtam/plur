@@ -2,27 +2,30 @@
 
 Auth::routes();
 
-Route::view('/', 'frontend.welcome');
-Route::post('/create', 'GeneralUrlController@create')->name('createshortlink');
-Route::post('/custom-link-avail-check', 'GeneralUrlController@checkCustomLinkAvailability');
+Route::view('/', 'frontend.welcome')->name('home');
+Route::post('/create', 'UrlController@create')->name('createshortlink');
+Route::post('/custom-link-avail-check', 'UrlController@checkExistingCustomUrl');
 
 Route::namespace('Frontend')->group(function () {
     Route::get('/+{url_key}', 'UrlController@view')->name('short_url.stats');
     Route::get('/duplicate/{url_key}', 'UrlController@duplicate')->middleware('auth')->name('duplicate');
 });
 
-Route::namespace('Backend')->group(function () {
-    Route::middleware('auth')->prefix('admin')->group(function () {
+Route::namespace('Backend')->prefix('admin')->group(function () {
+    Route::middleware('auth')->group(function () {
         // Dashboard (My URLs)
-        Route::get('/', 'DashboardController@view')->name('admin');
+        Route::get('/', 'DashboardController@view')->name('dashboard');
         Route::get('/myurl/getdata', 'DashboardController@getData');
-        Route::get('/delete/{url_hashId}', 'DashboardController@delete')->name('admin.delete');
-        Route::get('/duplicate/{url_key}', 'DashboardController@duplicate')->name('admin.duplicate');
+        Route::get('/delete/{url_hashId}', 'DashboardController@delete')->name('dashboard.delete');
+        Route::get('/duplicate/{url_key}', 'DashboardController@duplicate')->name('dashboard.duplicate');
+
+        // Statistics
+        Route::get('/statistics', 'StatisticsController@view')->name('dashboard.stat');
 
         // All URLs
-        Route::get('/allurl', 'AllUrlController@index')->name('admin.allurl');
+        Route::get('/allurl', 'AllUrlController@index')->name('dashboard.allurl');
         Route::get('/allurl/getdata', 'AllUrlController@getData');
-        Route::get('/allurl/delete/{url_hashId}', 'AllUrlController@delete')->name('admin.allurl.delete');
+        Route::get('/allurl/delete/{url_hashId}', 'AllUrlController@delete')->name('dashboard.allurl.delete');
 
         // User
         Route::namespace('User')->prefix('user')->group(function () {
@@ -38,4 +41,4 @@ Route::namespace('Backend')->group(function () {
     });
 });
 
-Route::get('/{url_key}', 'GeneralUrlController@urlRedirection');
+Route::get('/{url_key}', 'UrlController@urlRedirection');
